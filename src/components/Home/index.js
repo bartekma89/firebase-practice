@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CarList from './CarList';
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -17,22 +19,17 @@ class Home extends React.Component {
 
     this.props.firebase.cars().on('value', (snapshot) => {
       const carObject = snapshot.val();
+      let carList = [];
 
       if (carObject) {
-        const carList = Object.keys(carObject).map((key) => {
+        carList = Object.keys(carObject).map((key) => {
           return { ...carObject[key], uid: key };
         });
-
-        this.setState({
-          cars: carList,
-          isLoading: false,
-        });
-      } else {
-        this.setState({
-          cars: [],
-          isLoading: false,
-        });
       }
+      this.setState({
+        cars: carList,
+        isLoading: false,
+      });
     });
   }
 
@@ -44,32 +41,25 @@ class Home extends React.Component {
     this.props.firebase.car(carId).remove();
   };
 
+  onEditCar = (car, data) => {
+    this.props.firebase.car(car.uid).set({
+      ...data,
+    });
+  };
+
   render() {
     return (
       <div>
         <h1>Cars to rent</h1>
-        {this.state.cars.length > 0 && this.state.cars ? (
-          this.state.cars.map((el, index) => {
-            return (
-              <div key={index.toString()}>
-                <ul>
-                  <li>Brand: {el.brand}</li>
-                  <li>Model: {el.model}</li>
-                  <li>Year of production: {el.yearOfProd}</li>
-                  <li>Quantity of seats: {el.quantityOfSeats}</li>
-                  <li>Quantity of doors: {el.quantityOfDoors}</li>
-                  <li>Transmission: {el.transmission}</li>
-                  <li>Fuel type: {el.fuelType}</li>
-                  <li>Price per week: {el.pricePerWeek} zł</li>
-                </ul>
-                <button type="button" onClick={() => this.onRemoveCar(el.uid)}>
-                  Delete
-                </button>
-              </div>
-            );
-          })
+        {this.state.isLoading ? (
+          <div>Loading...</div>
         ) : (
-          <div>No cars to rent</div>
+          <CarList
+            cars={this.state.cars}
+            onRemoveCar={this.onRemoveCar}
+            onEditCar={this.onEditCar}
+            authUser={this.props.authUser}
+          />
         )}
       </div>
     );

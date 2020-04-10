@@ -49,10 +49,10 @@ class App extends React.Component {
               <Landing></Landing>
             </Route>
             <Route path={ROUTES.HOME}>
-              <Home firebase={firebase}></Home>
+              <Home firebase={firebase} authUser={this.state.authUser}></Home>
             </Route>
             <Route path={ROUTES.CONTACT}>
-              <Contact></Contact>
+              <Contact firebase={firebase}></Contact>
             </Route>
             <Route path={ROUTES.SIGNIN}>
               <SignIn

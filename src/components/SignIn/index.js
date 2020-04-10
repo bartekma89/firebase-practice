@@ -44,13 +44,6 @@ class SignIn extends React.Component {
         this.state.password
       );
 
-      // this.props.firebase
-      //   .user(authUser.user.uid)
-      //   .set({ email: this.state.email });
-
-      // console.log(this.props.firebase.cars());
-      // this.props.firebase.cars().push({ email: this.state.email });
-
       this.setState({
         email: '',
         password: '',

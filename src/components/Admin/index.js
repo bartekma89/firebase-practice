@@ -53,6 +53,7 @@ class CarRentalForm extends React.Component {
     this.state = {
       brand: '',
       model: '',
+      engineType: '',
       yearOfProd: '',
       quantityOfSeats: '',
       quantityOfDoors: '',
@@ -73,6 +74,7 @@ class CarRentalForm extends React.Component {
       this.setState({
         brand: '',
         model: '',
+        engineType: '',
         yearOfProd: '',
         quantityOfSeats: '',
         quantityOfDoors: '',
@@ -118,6 +120,16 @@ class CarRentalForm extends React.Component {
             />
           </div>
           <div>
+            <label>Engine type:</label>
+            <input
+              type="text"
+              value={this.state.engineType}
+              onChange={this.onChange}
+              name="engineType"
+              placeholder="2.5 TD"
+            />
+          </div>
+          <div>
             <label>Year of production:</label>
             <input
               type="text"
@@ -137,8 +149,8 @@ class CarRentalForm extends React.Component {
               <option value="" disabled hidden>
                 Select transmission type
               </option>
-              <option value="manual">Manual</option>
-              <option value="automatic">Automatic</option>
+              <option value="Manual">Manual</option>
+              <option value="Automatic">Automatic</option>
             </select>
           </div>
           <div>
@@ -175,9 +187,8 @@ class CarRentalForm extends React.Component {
               <option value="" disabled hidden>
                 Select fuel type
               </option>
-              <option value="petrol">Petrol</option>
-              <option value="diesel">Diesel</option>
-              <option value="petrol/diesel">Petrol/diesel</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
             </select>
           </div>
           <div>
