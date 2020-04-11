@@ -22,6 +22,15 @@ class CarItem extends React.Component {
     this.setState((state) => {
       return {
         editMode: !state.editMode,
+        brand: this.props.car.brand,
+        model: this.props.car.model,
+        engineType: this.props.car.engineType,
+        yearOfProd: this.props.car.yearOfProd,
+        quantityOfSeats: this.props.car.quantityOfSeats,
+        quantityOfDoors: this.props.car.quantityOfDoors,
+        transmission: this.props.car.transmission,
+        fuelType: this.props.car.fuelType,
+        pricePerWeek: this.props.car.pricePerWeek,
       };
     });
   };
@@ -43,6 +52,16 @@ class CarItem extends React.Component {
   };
 
   render() {
+    const isInvalid =
+      this.state.brand === '' ||
+      this.state.model === '' ||
+      this.state.engineType === '' ||
+      this.state.yearOfProd < 1 ||
+      this.state.quantityOfSeats < 2 ||
+      this.state.quantityOfDoors < 2 ||
+      this.state.transmission === '' ||
+      this.state.fuelType === '' ||
+      this.state.pricePerWeek < 1;
     return (
       <div>
         {this.state.editMode ? (
@@ -78,7 +97,8 @@ class CarItem extends React.Component {
               Year of production:{' '}
               <input
                 name="yearOfProd"
-                type="text"
+                type="number"
+                min={1}
                 onChange={this.onChangeEditData}
                 value={this.state.yearOfProd}
               />
@@ -88,6 +108,7 @@ class CarItem extends React.Component {
               <input
                 name="quantityOfSeats"
                 type="number"
+                min={2}
                 value={this.state.quantityOfSeats}
                 onChange={this.onChangeEditData}
               />
@@ -97,6 +118,7 @@ class CarItem extends React.Component {
               <input
                 name="quantityOfDoors"
                 type="number"
+                min={2}
                 value={this.state.quantityOfDoors}
                 onChange={this.onChangeEditData}
               />
@@ -127,7 +149,8 @@ class CarItem extends React.Component {
               Price per week:{' '}
               <input
                 name="pricePerWeek"
-                type="text"
+                type="number"
+                min={1}
                 onChange={this.onChangeEditData}
                 value={this.state.pricePerWeek}
               />
@@ -150,7 +173,11 @@ class CarItem extends React.Component {
           <div>
             {this.state.editMode ? (
               <span>
-                <button type="button" onClick={this.onSaveEditCar}>
+                <button
+                  type="button"
+                  onClick={this.onSaveEditCar}
+                  disabled={isInvalid}
+                >
                   Save
                 </button>
                 <button type="button" onClick={this.onToogleEditMode}>

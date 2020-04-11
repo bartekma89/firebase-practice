@@ -20,6 +20,7 @@ class Contact extends React.Component {
       lengthOfLoan: 1,
       insurance: false,
       fuelType: '',
+      errors: {},
       summary: null,
       isLoading: false,
       cars: [],
@@ -77,16 +78,70 @@ class Contact extends React.Component {
   };
 
   onChange = (event) => {
+    const name = event.target.name;
     const value =
       event.target.type === 'checkbox'
         ? event.target.checked
         : event.target.value;
-    this.setState({
-      [event.target.name]: value,
+    this.setState(
+      {
+        [name]: value,
+      },
+      () => {
+        this.validationFields(name, value);
+      }
+    );
+  };
+
+  validationFields = (name, value) => {
+    let fieldValidationErrors = {};
+    let isEmailValid = true;
+    let isPostalCodeValid = true;
+    let isPhoneNumberValid = true;
+
+    switch (name) {
+      case 'email':
+        isEmailValid = value.match(/^[0-9a-z_.-]+@[0-9a-z.-]+\.[a-z]{2,3}$/i);
+        fieldValidationErrors.email = isEmailValid
+          ? ''
+          : 'Email has wrong format';
+        break;
+      case 'postalCode':
+        isPostalCodeValid = value.match(/[0-9]{2}-[0-9]{3}/g);
+        fieldValidationErrors.postalCode = isPostalCodeValid
+          ? ''
+          : 'Postal code has wrong format';
+        break;
+      case 'phoneNumber':
+        isPhoneNumberValid = value.match(/^[(+?)0-9]{9,15}$/g);
+        fieldValidationErrors.phoneNumber = isPhoneNumberValid
+          ? ''
+          : 'Phone number has wrong format';
+        break;
+      default:
+        break;
+    }
+
+    this.setState((prevState) => {
+      return {
+        errors: { ...prevState.errors, ...fieldValidationErrors },
+      };
     });
   };
 
   render() {
+    const isInvalid =
+      this.state.firstName === '' ||
+      this.state.lastName === '' ||
+      this.state.age === '' ||
+      this.state.email === '' ||
+      this.state.city === '' ||
+      this.state.street === '' ||
+      this.state.houseNumber === '' ||
+      this.state.postalCode === '' ||
+      this.state.phoneNumber === '' ||
+      this.state.carPrice === '' ||
+      this.state.fuelType === '';
     return (
       <div>
         <h1>Calculation of the car rental price</h1>
@@ -134,6 +189,7 @@ class Contact extends React.Component {
                   onChange={this.onChange}
                   placeholder="johnDoe@example.com"
                 />
+                {this.state.errors.email && <p>{this.state.errors.email}</p>}
               </div>
               <div>
                 <label>City:</label>
@@ -174,6 +230,9 @@ class Contact extends React.Component {
                   onChange={this.onChange}
                   placeholder="20-000"
                 />
+                {this.state.errors.postalCode && (
+                  <p>{this.state.errors.postalCode}</p>
+                )}
               </div>
               <div>
                 <label>Phone number:</label>
@@ -184,6 +243,9 @@ class Contact extends React.Component {
                   onChange={this.onChange}
                   placeholder="999999999"
                 />
+                {this.state.errors.phoneNumber && (
+                  <p>{this.state.errors.phoneNumber}</p>
+                )}
               </div>
               <div>
                 <label>Insurance:</label>
@@ -251,11 +313,26 @@ class Contact extends React.Component {
                   placeholder="5"
                 />
               </div>
-              <button type="button" onClick={this.onCalculate}>
+              <button
+                type="button"
+                disabled={isInvalid}
+                onClick={this.onCalculate}
+              >
                 Calculate the price
               </button>
             </form>
-            {this.state.summary && <div>Summary: {this.state.summary} zł</div>}
+            {this.state.summary && (
+              <div>
+                <div>
+                  Per day:{' '}
+                  {Math.ceil(
+                    this.state.summary / (this.state.lengthOfLoan * 7)
+                  )}{' '}
+                  zł
+                </div>
+                <div>Summary: {Math.ceil(this.state.summary)} zł</div>
+              </div>
+            )}
           </div>
         )}
       </div>

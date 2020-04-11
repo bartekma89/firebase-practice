@@ -70,6 +70,7 @@ class SignIn extends React.Component {
   };
 
   render() {
+    const isInvalid = this.state.email === '' || this.state.password === '';
     return (
       <div>
         {this.state.isLoading ? (
@@ -94,7 +95,9 @@ class SignIn extends React.Component {
                 onChange={this.onChange}
               />
             </div>
-            <button type="submit">Sign in</button>
+            <button type="submit" disabled={isInvalid}>
+              Sign in
+            </button>
             {this.state.error && <p>{this.state.error.message}</p>}
           </form>
         )}
