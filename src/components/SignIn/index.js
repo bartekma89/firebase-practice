@@ -36,31 +36,31 @@ class SignIn extends React.Component {
     this.listener();
   }
 
-  onSubmit = async (event) => {
+  onSubmit = (event) => {
     event.preventDefault();
     event.persist();
 
-    try {
-      await this.props.firebase.setPersistance(
-        this.props.firebase.persistance.SESSION
-      );
-
-      await this.props.firebase.doSignInWithEmailAndPassword(
-        this.state.email,
-        this.state.password
-      );
-
-      this.setState({
-        email: '',
-        password: '',
-        error: null,
+    this.props.firebase
+      .setPersistance(this.props.firebase.persistance.SESSION)
+      .then(() => {
+        return this.props.firebase.doSignInWithEmailAndPassword(
+          this.state.email,
+          this.state.password
+        );
+      })
+      .then(() => {
+        this.setState({
+          email: '',
+          password: '',
+          error: null,
+        });
+        this.props.history.push(ROUTES.HOME);
+      })
+      .catch((error) => {
+        this.setState({
+          error,
+        });
       });
-      this.props.history.push(ROUTES.HOME);
-    } catch (error) {
-      this.setState({
-        error,
-      });
-    }
   };
 
   onChange = (event) => {

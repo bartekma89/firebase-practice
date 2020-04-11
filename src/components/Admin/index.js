@@ -66,29 +66,31 @@ class CarRentalForm extends React.Component {
     };
   }
 
-  onSubmit = async (event) => {
+  onSubmit = (event) => {
     event.preventDefault();
     event.persist();
 
-    try {
-      await this.props.firebase.cars().push(this.state);
-
-      this.setState({
-        brand: '',
-        model: '',
-        engineType: '',
-        yearOfProd: '',
-        quantityOfSeats: '',
-        quantityOfDoors: '',
-        transmission: '',
-        fuelType: '',
-        pricePerWeek: '',
+    this.props.firebase
+      .cars()
+      .push(this.state)
+      .then(() => {
+        this.setState({
+          brand: '',
+          model: '',
+          engineType: '',
+          yearOfProd: '',
+          quantityOfSeats: '',
+          quantityOfDoors: '',
+          transmission: '',
+          fuelType: '',
+          pricePerWeek: '',
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          error,
+        });
       });
-    } catch (error) {
-      this.setState({
-        error,
-      });
-    }
   };
 
   onChange = (event) => {
