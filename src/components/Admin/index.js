@@ -3,6 +3,8 @@ import { withRouter } from 'react-router-dom';
 
 import * as ROUTES from '../../constants/routes';
 
+import './admin.css';
+
 class Admin extends React.Component {
   constructor(props) {
     super(props);

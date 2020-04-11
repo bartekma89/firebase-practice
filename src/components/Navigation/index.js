@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import SignOutButton from '../SignOut';
 
+import './navigation.css';
+
 const Navigation = (props) => {
   return props.authUser ? (
     <NavigationAuth firebase={props.firebase} />

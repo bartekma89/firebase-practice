@@ -1,7 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/database';
-import 'firebase/storage';
+import * as firebase from 'firebase';
 
 const config = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -18,7 +18,7 @@ class Firebase {
 
     this.auth = app.auth();
     this.db = app.database();
-    this.storage = app.storage();
+    this.persistance = app.auth.Auth.Persistence;
   }
 
   // Auth API
@@ -26,6 +26,9 @@ class Firebase {
     this.auth.signInWithEmailAndPassword(email, password);
 
   doSignOut = () => this.auth.signOut();
+
+  setPersistance = (sessionStatus) =>
+    firebase.auth().setPersistence(sessionStatus);
 
   // Cars API
   car = (uid) => this.db.ref(`cars/${uid}`);

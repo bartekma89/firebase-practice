@@ -2,6 +2,8 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 
+import './signIn.css';
+
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -39,6 +41,10 @@ class SignIn extends React.Component {
     event.persist();
 
     try {
+      await this.props.firebase.setPersistance(
+        this.props.firebase.persistance.SESSION
+      );
+
       await this.props.firebase.doSignInWithEmailAndPassword(
         this.state.email,
         this.state.password

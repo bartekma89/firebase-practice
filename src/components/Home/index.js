@@ -2,6 +2,8 @@ import React from 'react';
 
 import CarList from './CarList';
 
+import './home.css';
+
 class Home extends React.Component {
   constructor(props) {
     super(props);

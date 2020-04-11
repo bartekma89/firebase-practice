@@ -113,6 +113,7 @@ class CarItem extends React.Component {
               </select>
             </li>
             <li>
+              Fuel type:{' '}
               <select
                 name="fuelType"
                 value={this.state.fuelType}
